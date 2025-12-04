@@ -1,0 +1,21 @@
+.students {
+  padding: 20px;
+}
+
+.student-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.student-item {
+  border: 1px solid #ddd;
+  padding: 15px;
+  border-radius: 10px;
+  background: #fff;
+}
+
+.student-item p {
+  margin: 5px 0;
+  font-size: 14px;
+}

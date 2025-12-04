@@ -1,0 +1,101 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+.sidebar {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 220px;
+  height: 100vh;
+  background: #022B3A;
+  padding: 20px 0;
+  transition: width .35s ease;
+  display: flex;
+  flex-direction: column;
+  z-index: 1500;
+}
+
+.sidebar.collapsed {
+  width: 60px;
+}
+
+.sidebar-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-bottom: 20px;
+}
+
+.sidebar-nav {
+  flex: 1;
+  margin-top: 25px;
+  display: flex;
+  flex-direction: column;
+}
+
+.nav-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.sidebar-option {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 18px;
+  text-decoration: none;
+  color: rgb(255, 253, 253);
+  border-radius: 10px;
+  transition: all 0.3s;
+}
+
+.sidebar-option:hover {
+  background: #8c9294;
+  color: #fff;
+}
+
+.sidebar-option.active {
+  border: 2px solid white;
+  color: #fffdfd;
+  font-weight: 600;
+}
+
+.sidebar-option img {
+  width: 22px;
+  height: 22px;
+  filter: brightness(0) invert(1);
+}
+
+.sidebar.collapsed .sidebar-option p {
+  display: none;
+}
+
+.sidebar.collapsed .sidebar-option {
+  justify-content: center;
+}
+
+.nav-tooltip {
+  display: none;
+}
+
+.sidebar.collapsed .nav-item:hover .nav-tooltip {
+  display: block;
+  position: absolute;
+  left: 60px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: #fff;
+  color: #151A2D;
+  padding: 6px 12px;
+  border-radius: 8px;
+  white-space: nowrap;
+  box-shadow: 0 5px 12px rgba(0,0,0,0.15);
+}
