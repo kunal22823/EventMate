@@ -5,6 +5,9 @@ import upload_area from './upload_area.png'
 import student from './student.png'
 import home from './home.png'
 import allEvent from './allEvent.png'
+import login from './login.png';
+import logout from './logout.png';
+
 
 export const assets ={
     EVENTMATE_Logo,
@@ -12,8 +15,10 @@ export const assets ={
     profile_image,
     upload_area,
     student,
-    home,
-    allEvent
+    home,   
+    allEvent,
+    login,
+    logout
 }
 
 export const url = 'http://localhost:4000'

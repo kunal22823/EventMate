@@ -8,7 +8,7 @@ const Sidebar = () => {
     <div className='sidebar'>
 
         <div className="sidebar-options">
-            <NavLink to="/" className="sidebar-option">
+            <NavLink to="/dashboard" className="sidebar-option">
                 <img src={assets.home} alt="" />
                 <p>Home</p>
             </NavLink>
@@ -23,6 +23,10 @@ const Sidebar = () => {
             <NavLink to="/student" className="sidebar-option">
                 <img src={assets.student} alt="" />
                 <p>Students</p>
+            </NavLink>
+            <NavLink to="/" className="sidebar-option">
+                <img src={assets.logout} alt="" />
+                <p>Logout</p>
             </NavLink>
         </div>
       
