@@ -1,11 +1,14 @@
 import express from "express";
-import { listStudents } from "../controllers/studentController.js";
+import {registerStudent,listStudents} from "../controllers/studentController.js";
 
 const studentRouter = express.Router();
 
-// Endpoints
-// studentRouter.post("/add", addStudent);        // Add new student
-studentRouter.get("/list", listStudents);      // Get all students
-// studentRouter.get("/:id", getStudent);         // Get single student by ID
+// Register new student
+studentRouter.post("/register", registerStudent);
+
+// Get all students
+studentRouter.get("/list", listStudents);
+
+// studentRouter.get("/:id", getStudent); // optional – single student
 
 export default studentRouter;

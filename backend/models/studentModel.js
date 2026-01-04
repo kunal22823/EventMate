@@ -1,23 +1,13 @@
-import mongoose from 'mongoose';
+// models/Student.js
+import mongoose from "mongoose";
 
 const studentSchema = new mongoose.Schema({
-    name: { type: String, required: true },
-    roll: {type:String,required:true},
-    email: { type: String, required: true, unique: true },
-    password: { type: String, required: true },
-
-    eventsParticipated: [
-        {
-            eventId: { type: mongoose.Schema.Types.ObjectId, ref: "Event" },
-            eventName: { type: String, required: true },
-            eventDate: { type: Date },
-            status: { type: String, default: "Registered" }, 
-            certificateUrl: { type: String, default: "" },
-        }
-    ]
+  rollno: { type: String, required: true },
+  name:  { type: String, required: true },
+  email: { type: String, required: true },
+  batch: { type: String, required: true },
+  createdAt: { type: Date, default: Date.now }
 });
 
-const studentModel =
-  mongoose.models.user || mongoose.model('student', studentSchema);
-
-export default studentModel;
+const Student = mongoose.models.Student || mongoose.model("Student", studentSchema);
+export default Student;

@@ -1,70 +1,92 @@
 import eventModel from "../models/eventModel.js";
 import fs from "fs";
 import nodemailer from "nodemailer";
+import Student from "../models/studentModel.js";
 
 //Add new event
+
 const addEvent = async (req, res) => {
-    try {
-        const image_filename = req.file.filename;
+  try {
+    const image_filename = req.file?.filename || "";
 
-        const event = new eventModel({
-            eventName: req.body.eventName,
-            description: req.body.description,
-            committee: req.body.committee,
-            dateTime: req.body.dateTime,
-            registrationLink: req.body.registrationLink || "",
-            eventLocation: req.body.eventLocation,
-            locationLink: req.body.locationLink || "",
-            image: image_filename,
-        });
+    // Save event
+    const event = new eventModel({
+      eventName: req.body.eventName,
+      description: req.body.description,
+      committee: req.body.committee,
+      dateTime: req.body.dateTime,
+      registrationLink: req.body.registrationLink || "",
+      eventLocation: req.body.eventLocation,
+      locationLink: req.body.locationLink || "",
+      image: image_filename,
+    });
 
-        await event.save();
+    await event.save();
 
-        // --------------------- EMAIL NOTIFICATION ---------------------
-        const transporter = nodemailer.createTransport({
-            service: "gmail",
-            auth: {
-                user: process.env.EMAIL_USER,
-                pass: process.env.EMAIL_PASS
-            }
-        });
+    // Fetch all registered student emails
+    const students = await Student.find({}, "email");
+    const emailList = students.map((stu) => stu.email);
 
-        // Email content
-        const mailOptions = {
-            from: `"Event-Mate" <${process.env.EMAIL_USER}>`,
-            to: "harishn.mca25@siescoms.sies.edu.in",
-            subject: `New Event Added: ${event.eventName}`,
-            html: `
-                <h2>New Event Alert 🚀</h2>
-                <p>A new event has been added on the portal.</p>
-
-                <h3>${event.eventName}</h3>
-                <p><strong>Description:</strong> ${event.description}</p>
-                <p><strong>Committee:</strong> ${event.committee}</p>
-                <p><strong>Date & Time:</strong> ${event.dateTime}</p>
-                <p><strong>Location:</strong> ${event.eventLocation}</p>
-
-                ${
-                    event.registrationLink
-                        ? `<p><strong>Register Here:</strong> <a href="${event.registrationLink}">${event.registrationLink}</a></p>`
-                        : ""
-                }
-
-                <p>Visit the website for more details.</p>
-            `,
-        };
-
-        // Send the email
-        await transporter.sendMail(mailOptions);
-        // --------------------------------------------------------------
-
-        res.json({ success: true, message: "New Event Added & Email Sent" });
-
-    } catch (error) {
-        console.log(error);
-        res.json({ success: false, message: "Something went wrong" });
+    if (emailList.length === 0) {
+      return res.json({
+        success: true,
+        message: "Event added, but no registered students to notify",
+      });
     }
+
+    // Create mail transporter
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
+      },
+    });
+
+    // Email content (SENT TO ALL)
+    const mailOptions = {
+      from: `"Event-Mate" <${process.env.EMAIL_USER}>`,
+      bcc: emailList,
+      subject: `📢 New Event: ${event.eventName}`,
+      html: `
+        <h2>🚀 New Event Alert</h2>
+        <p>A new event has been added to the EventMate portal.</p>
+
+        <h3>${event.eventName}</h3>
+        <p><strong>Description:</strong> ${event.description}</p>
+        <p><strong>Committee:</strong> ${event.committee}</p>
+        <p><strong>Date & Time:</strong> ${event.dateTime}</p>
+        <p><strong>Location:</strong> ${event.eventLocation}</p>
+
+        ${
+          event.registrationLink
+            ? `<p><strong>Register Here:</strong>
+               <a href="${event.registrationLink}">${event.registrationLink}</a></p>`
+            : ""
+        }
+
+        <br />
+        <p>Regards,<br/><b>Event-Mate Team</b></p>
+      `,
+    };
+
+    //Send email
+    await transporter.sendMail(mailOptions);
+
+    res.json({
+      success: true,
+      message: "Event added & email sent to all registered students",
+    });
+  } catch (error) {
+    console.error("Add Event Error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Something went wrong",
+    });
+  }
 };
+
+export default addEvent;
 
 // List all events
 const listEvents = async (req, res) => {

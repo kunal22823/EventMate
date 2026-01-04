@@ -18,7 +18,7 @@ connectDb();
 //API endpoints
 app.use("/api/event",eventRouter);
 app.use("/images",express.static('uploads'));
-app.use("/api/student",studentRouter);
+app.use("/api/students",studentRouter);
 
 
 app.get("/",(req,res)=>{
