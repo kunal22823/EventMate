@@ -9,5 +9,5 @@ const studentSchema = new mongoose.Schema({
   createdAt: { type: Date, default: Date.now }
 });
 
-const Student = mongoose.models.Student || mongoose.model("Student", studentSchema);
+const Student = mongoose.models.Student || mongoose.model("students", studentSchema);
 export default Student;
